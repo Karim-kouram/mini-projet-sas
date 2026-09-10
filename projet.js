@@ -180,8 +180,39 @@ const trips = [
         availableSeats: 50
     }
 ];
-const tickets = [];
-let nextTicketId = 1;
+const tickets = [
+    { id: 1, passengerName: "Ahmed", tripId: 1, seatNumber: 1, price: 25 },
+    { id: 2, passengerName: "Fatima", tripId: 1, seatNumber: 2, price: 25 },
+    { id: 3, passengerName: "Youssef", tripId: 2, seatNumber: 1, price: 30 },
+    { id: 4, passengerName: "Ayoub", tripId: 3, seatNumber: 1, price: 90 },
+    { id: 5, passengerName: "Sanae", tripId: 3, seatNumber: 2, price: 90 },
+    { id: 6, passengerName: "Omar", tripId: 3, seatNumber: 3, price: 90 },
+    { id: 7, passengerName: "Khadija", tripId: 4, seatNumber: 1, price: 120 },
+    { id: 8, passengerName: "Mehdi", tripId: 4, seatNumber: 2, price: 120 },
+    { id: 9, passengerName: "Salma", tripId: 4, seatNumber: 3, price: 120 },
+    { id: 10, passengerName: "Hamza", tripId: 4, seatNumber: 4, price: 120 }
+];
+
+function chercherPlaceLibre(tripId) {
+
+    for (let place = 1; place <= 50; place++) {
+
+        let placeOccupee = false;
+
+        for (let ticket of tickets) {
+
+            if (ticket.tripId === tripId && ticket.seatNumber === place) {
+                placeOccupee = true;
+                break;
+            }
+        }
+        if (placeOccupee !== true) {
+            return place;
+        }
+    }
+
+    return null;
+}
 const prompt = require('prompt-sync')();
 /*
 function getTripById(tripId) {
@@ -215,9 +246,10 @@ function acheterTicket(Name, idTrip){
         if(trip.id === idTrip){
             value = false;
             if(trip.availableSeats >= 1){
-                const seatNumber = 50 - trip.availableSeats + 1;
+                let nextTicketId = tickets.length + 1;
+                const seatNumber = chercherPlaceLibre(idTrip);
                 const newTicket = {
-                    id: nextTicketId++,
+                    id: nextTicketId,
                     passengerName: Name,
                     tripId: trip.id,
                     seatNumber: seatNumber,
